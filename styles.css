@@ -379,7 +379,7 @@
   /* ─── INTRO VISUALS ─── */
   .intro-visual-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     padding-bottom: 60px;
   }
@@ -392,7 +392,7 @@
     border: 1px solid var(--grey-mid);
     transition: all 0.4s ease;
   }
-  .intro-img-wrapper img {
+  .intro-img-wrapper img, .intro-img-wrapper video {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -403,11 +403,14 @@
     box-shadow: var(--shadow-md);
     border-color: var(--green-light);
   }
-  .intro-img-wrapper:hover img {
+  .intro-img-wrapper:hover img, .intro-img-wrapper:hover video {
     transform: scale(1.05);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
+    .intro-visual-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  }
+  @media (max-width: 600px) {
     .intro-visual-grid { grid-template-columns: 1fr; }
   }
 

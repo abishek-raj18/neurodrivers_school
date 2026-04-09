@@ -1,8 +1,8 @@
 :root {
-    --green-deep: #1a5c2e;
-    --green-mid: #2d7a45;
-    --green-light: #4caf70;
-    --green-pale: #e8f5ec;
+    --green-deep: #455223;
+    --green-mid: #94B04B;
+    --green-light: #CFDBB0;
+    --green-pale: #F2F6E6;
     --yellow: #f5c842;
     --yellow-light: #fef9e7;
     --white: #ffffff;
@@ -100,9 +100,9 @@
     position: absolute; inset: 0;
     background: linear-gradient(
       135deg,
-      rgba(13,48,25,0.88) 0%,
-      rgba(26,92,46,0.80) 40%,
-      rgba(13,48,25,0.75) 100%
+      rgba(13,48,25,0.42) 0%,
+      rgba(26,92,46,0.32) 40%,
+      rgba(13,48,25,0.38) 100%
     );
   }
 
@@ -879,3 +879,5 @@
     .nav-links { display: none; }
     .about-stats { grid-template-columns: 1fr 1fr; }
   }
+
+

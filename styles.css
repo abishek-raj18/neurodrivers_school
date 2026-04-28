@@ -463,7 +463,7 @@
   }
 
   /* ─── STRATEGIC GOALS ─── */
-  #goals { background: var(--dark); }
+  #goals { background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%); }
   .goals-header { text-align: center; max-width: 640px; margin: 0 auto 60px; }
   .goals-header .section-label { justify-content: center; color: var(--yellow); }
   .goals-header .section-label::before { background: var(--yellow); }
@@ -779,7 +779,7 @@
   }
 
   /* ─── CONTACT ─── */
-  #contact { background: var(--dark); }
+  #contact { background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%); }
   .contact-inner {
     display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
   }
@@ -840,7 +840,7 @@
 
   /* ─── FOOTER ─── */
   footer {
-    background: #0d1a11;
+    background: linear-gradient(135deg, #020617 0%, #022c22 100%);
     padding: 30px 8%;
     display: flex; align-items: center; justify-content: space-between;
     flex-wrap: wrap; gap: 16px;

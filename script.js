@@ -114,7 +114,16 @@ import { supabase } from './supabase.js';
 
   // ── SUPABASE INTEGRATION ────────────────────────────────────
   async function loadSupabaseImages() {
+    // Skip entirely if Supabase is not configured — static HTML content stays intact
+    if (!supabase) {
+      console.info('Supabase not connected — showing static content.');
+      return;
+    }
+
     try {
+      const galleryGrid = document.querySelector('.gallery-grid');
+      const campusGrid  = document.querySelector('.intro-visual-grid');
+
       // 1. Fetch from 'gallery_images' table
       const { data: galleryItems, error: galleryError } = await supabase
         .from('gallery_images')
@@ -123,37 +132,6 @@ import { supabase } from './supabase.js';
 
       if (galleryError) throw galleryError;
 
-      const galleryGrid = document.querySelector('.gallery-grid');
-      const campusGrid = document.querySelector('.intro-visual-grid');
-      
-      if ((galleryGrid && galleryItems && galleryItems.length > 0) || (campusGrid && campusItems && campusItems.length > 0)) {
-        // Clear all static media and reset tracker
-        if (galleryGrid) galleryGrid.innerHTML = '';
-        if (campusGrid) campusGrid.innerHTML = '';
-        allMedia.length = 0; // Clear the array in place
-      }
-
-      if (galleryGrid && galleryItems && galleryItems.length > 0) {
-        galleryItems.forEach((item) => {
-          const itemDiv = document.createElement('div');
-          itemDiv.className = `gallery-item reveal visible`; // Adding visible for immediate show or let observer handle it
-          
-          const img = document.createElement('img');
-          img.src = item.url;
-          img.alt = item.alt_text || 'Gallery photo';
-          img.className = 'media-item';
-          
-          itemDiv.appendChild(img);
-          galleryGrid.appendChild(itemDiv);
-
-          // Update allMedia array for lightbox
-          allMedia.push(img);
-          const newIndex = allMedia.length - 1;
-          img.style.cursor = 'pointer';
-          img.addEventListener('click', () => openLightbox(newIndex));
-        });
-      }
-
       // 2. Fetch from 'campus_images' table (for Our Campus section)
       const { data: campusItems, error: campusError } = await supabase
         .from('campus_images')
@@ -161,20 +139,49 @@ import { supabase } from './supabase.js';
 
       if (campusError) throw campusError;
 
-      if (campusGrid && campusItems && campusItems.length > 0) {
+      // Only replace static content if Supabase returned rows
+      const hasGallery = galleryGrid && galleryItems && galleryItems.length > 0;
+      const hasCampus  = campusGrid  && campusItems  && campusItems.length  > 0;
+
+      if (hasGallery || hasCampus) {
+        if (hasGallery) galleryGrid.innerHTML = '';
+        if (hasCampus)  campusGrid.innerHTML  = '';
+        allMedia.length = 0;
+      }
+
+      if (hasGallery) {
+        galleryItems.forEach((item) => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'gallery-item reveal visible';
+
+          const img = document.createElement('img');
+          img.src       = item.url;
+          img.alt       = item.alt_text || 'Gallery photo';
+          img.className = 'media-item';
+
+          itemDiv.appendChild(img);
+          galleryGrid.appendChild(itemDiv);
+
+          allMedia.push(img);
+          const newIndex = allMedia.length - 1;
+          img.style.cursor = 'pointer';
+          img.addEventListener('click', () => openLightbox(newIndex));
+        });
+      }
+
+      if (hasCampus) {
         campusItems.forEach((item) => {
           const wrapper = document.createElement('div');
           wrapper.className = 'intro-img-wrapper reveal visible';
-          
+
           const img = document.createElement('img');
-          img.src = item.url;
-          img.alt = item.alt_text || 'Campus photo';
+          img.src       = item.url;
+          img.alt       = item.alt_text || 'Campus photo';
           img.className = 'media-item';
-          
+
           wrapper.appendChild(img);
           campusGrid.appendChild(wrapper);
 
-          // Update allMedia for lightbox
           allMedia.push(img);
           const newIndex = allMedia.length - 1;
           img.style.cursor = 'pointer';
@@ -183,10 +190,11 @@ import { supabase } from './supabase.js';
       }
 
     } catch (err) {
-      console.error('Error loading images from Supabase:', err.message);
+      console.error('Supabase image load error:', err.message);
+      // Static content remains — no further action needed
     }
   }
 
-  // Initialize Supabase loading
+  // Initialize Supabase loading (safe — won't break page if not connected)
   loadSupabaseImages();
 

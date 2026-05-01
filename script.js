@@ -19,6 +19,24 @@ import { supabase } from './supabase.js';
     }
   });
 
+  // Mobile Menu Toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu');
+  const navLinksContainer = document.querySelector('.nav-links');
+
+  if (mobileMenuBtn && navLinksContainer) {
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinksContainer.classList.toggle('active');
+    });
+
+    // Close menu when a link is clicked
+    const navLinks = navLinksContainer.querySelectorAll('a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navLinksContainer.classList.remove('active');
+      });
+    });
+  }
+
   // ── LIGHTBOX ──────────────────────────────────────────────────
   const lightbox      = document.getElementById('lightbox');
   const lightboxImg   = document.getElementById('lightbox-img');
